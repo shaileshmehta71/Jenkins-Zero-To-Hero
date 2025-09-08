@@ -1,13 +1,13 @@
-# You can change this base image to anything else
-# But make sure to use the correct version of Java
-FROM adoptopenjdk/openjdk11:alpine-jre
+# Java 11, Alpine, multi-arch (arm64/amd64)
+FROM eclipse-temurin:11-jre-alpine
 
-# Simply the artifact path
+# Path to your built JAR (adjust if needed)
 ARG artifact=target/spring-boot-web.jar
 
 WORKDIR /opt/app
-
 COPY ${artifact} app.jar
 
-# This should not be changed
-ENTRYPOINT ["java","-jar","app.jar"]
+# Optional: pass JVM opts at runtime: docker run -e JAVA_OPTS="..."
+ENV JAVA_OPTS=""
+
+ENTRYPOINT ["sh","-c","java $JAVA_OPTS -jar app.jar"]
